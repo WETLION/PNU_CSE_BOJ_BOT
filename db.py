@@ -116,8 +116,7 @@ def user_read_total_score(id): # 전체 점수 불러오기
 def user_update_total_score(id, score): # 전체 점수 업데이트
     con = sqlite3.connect('db/user.db')
     cur = con.cursor()
-    updated_total_score = user_read_week_score(id) + score
-    cur.execute('UPDATE boj_id SET week_score = ?, total_score = ? WHERE id = ?', (0, updated_total_score, id))
+    cur.execute('UPDATE boj_id SET week_score = ?, total_score = ? WHERE id = ?', (0, score, id))
     con.commit()
     con.close()
     
