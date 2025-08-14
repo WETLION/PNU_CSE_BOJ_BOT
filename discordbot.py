@@ -31,6 +31,7 @@ async def on_ready():
 
 @bot.command()
 async def 등록(ctx, msg):
+    print("등록", ctx.author, msg)
     await ctx.message.delete() # ctx.message는 원 코드의 message와 같다.
     # print(str(ctx.author), type(ctx.author)) # ctx.author는 discord.Member 객체이다. str이 아님.
     chk = db.user_init(ctx, msg)
@@ -43,6 +44,7 @@ async def 등록(ctx, msg):
 
 @bot.command()
 async def 나의오늘점수(ctx):
+    print("나의오늘점수", ctx.author)
     await ctx.message.delete()
     user = db.user_read(ctx)
     if type(user) == type(None):
@@ -58,6 +60,7 @@ async def 나의오늘점수(ctx):
 
 @bot.command()
 async def 나의주간점수(ctx):
+    print("나의주간점수", ctx.author)
     await ctx.message.delete()
     user = db.user_read(ctx)
     if type(user) == type(None):
@@ -73,6 +76,7 @@ async def 나의주간점수(ctx):
 
 @bot.command()
 async def 나의전체점수(ctx):
+    print("나의전체점수", ctx.author)
     await ctx.message.delete()
     user = db.user_read(ctx)
     if type(user) == type(None):
@@ -88,18 +92,23 @@ async def 나의전체점수(ctx):
 
 @bot.command()
 async def 주간랭킹(ctx):
+    print("주간랭킹", ctx.author)
     await ctx.message.delete()
     output = await get_ranking(week_score, "주간 랭킹")
     await ctx.send(output)
 
 @bot.command()
 async def 전체랭킹(ctx):
+    print("전체랭킹", ctx.author)
     await ctx.message.delete()
     output = await get_ranking(total_score, "전체 랭킹")
     await ctx.send(output)
 
     
 async def get_ranking(score_type: int, title: str):
+    if score_type == week_score:
+        for i in db.user_read_all():
+            db.user_update_week_score(i[1])
     users = db.user_read_all()
     # 동순위 고려
     ranked_users = func.get_ranked_users(users, score_type)
@@ -118,10 +127,6 @@ async def day_check():
     date_str = today.strftime("%y년 %m월 %d일")
     weekday_str = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'][today.weekday()]
     date_header = f"{date_str} {weekday_str}"
-    
-    for i in db.user_read_all():
-        # week_score(위클리) 점수 업데이트
-        db.user_update_week_score(i[1])
     
     # 디스코드 채널에 위클리 랭킹 전송
     week_output = await get_ranking(week_score, "주간 랭킹")
