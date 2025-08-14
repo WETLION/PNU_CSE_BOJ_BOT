@@ -141,7 +141,7 @@ async def day_check():
         total_output = await get_ranking(total_score, "전체 랭킹")
         await bot.get_channel(today_boj).send(f"## {date_header}\n{total_output}")  
 
-today_boj, test_boj, test_server_id, server_id = open('id.txt', 'r').readline().split()
+today_boj, test_boj, test_server_id, server_id = map(int, open('id.txt', 'r').readline().split())
 
 #디스코드 봇 토큰
 token = open('token.txt', 'r').readline()
