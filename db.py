@@ -17,12 +17,12 @@ def make_all_level():
 def reset():
     con = sqlite3.connect('db/user.db')
     cur = con.cursor()
-    # cur.execute("DROP TABLE boj_id")
-    # cur.execute("DROP TABLE solved_problem")
-    # cur.execute("CREATE TABLE boj_id (discord_id TEXT, id TEXT, week_score INTEGER, total_score INTEGER, day_score INTEGER)")
-    # cur.execute("CREATE TABLE solved_problem (id TEXT" + make_all_level() + ")")
-    cur.execute("DELETE FROM boj_id WHERE id = ?", ('scientistkjm',))
-    cur.execute("DELETE FROM solved_problem WHERE id = ?", ("scientistkjm",))
+    cur.execute("DROP TABLE boj_id")
+    cur.execute("DROP TABLE solved_problem")
+    cur.execute("CREATE TABLE boj_id (discord_id TEXT, id TEXT, week_score INTEGER, total_score INTEGER, day_score INTEGER)")
+    cur.execute("CREATE TABLE solved_problem (id TEXT" + make_all_level() + ")")
+    # cur.execute("DELETE FROM boj_id WHERE id = ?", ('scientistkjm',))
+    # cur.execute("DELETE FROM solved_problem WHERE id = ?", ("scientistkjm",))
     con.commit()
     con.close()
 
