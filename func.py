@@ -13,7 +13,7 @@ def user_calculate_total_score():
     for user in ranked_users:
         rank = user[5]
         user_id = user[1]
-        total_score = int(100 * (0.93 ** (rank - 1)))
+        total_score = int(100 * (0.93 ** (rank - 1))) + user[3]
         db.user_update_total_score(user_id, total_score)
 
 def get_ranked_users(users, score_type: int):
