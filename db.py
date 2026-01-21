@@ -40,13 +40,20 @@ def user_init(ctx, msg):
     cur.execute('SELECT * FROM boj_id WHERE discord_id = ?', (str(ctx.author),))
     arr = cur.fetchone()
     print(arr)
-    if arr == None:
-        cur.execute('INSERT INTO boj_id VALUES (?, ?, ?, ?, ?)', (str(ctx.author), msg, 0, 0, 0))
+    cur.execute('SELECT * FROM boj_id WHERE id = ?', msg)
+    boj_arr = cur.fetchone()
+    print(boj_arr)
+    if arr == None and boj_arr == None:
+        cur.execute('INSERT INTO boj_id(discord_id, id, week_score, total_score, day_score) VALUES (?, ?, ?, ?, ?)', (str(ctx.author), msg, 0, 0, 0))
+    elif arr == None:
+        cur.execute('UPDATE boj_id SET discord_id = ? WHERE id = ?', (str(ctx.author), msg))
+        ret = 2
     else:
         cur.execute('DELETE FROM solved_problem WHERE id = ?', (arr[boj_id], ))
         cur.execute('UPDATE boj_id SET id = ? WHERE discord_id = ?', (msg, str(ctx.author)))
         ret = 1
-    cur.execute('INSERT INTO solved_problem VALUES(' + '?, ' * 31 + '?)', (msg, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+    if ret != 2:
+        cur.execute('INSERT INTO solved_problem(id, unranked, bronzeV, bronzeIV, bronzeIII, bronzeII, bronzeI, silverV, silverIV, silverIII, silverII, silverI, goldV, goldIV, goldIII, goldII, goldI, platinumV, platinumIV, platinumIII, platinumII, platinumI, diamondV, diamondIV, diamondIII, diamondII, diamondI, rubyV, rubyIV, rubyIII, rubyII, rubyI) VALUES(' + '?, ' * 31 + '?)', (msg, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
     con.commit()
     con.close()
     if solved_problem_update(msg) < 0:

@@ -37,6 +37,8 @@ async def 등록(ctx, msg):
     chk = db.user_init(ctx, msg)
     if chk == 1:
         await ctx.send("```" + f"{str(ctx.author.display_name)}님의 아이디가 수정되었습니다." + "```")
+    elif chk == 2:
+        await ctx.send(f"```{str(ctx.author.display_name)}님의 디스코드 아이디가 수정되었습니다.```")
     elif chk == -1:
         await ctx.send("```" + "API 호출에 실패하였습니다.\n 입력하신 아이디를 다시 확인해주시거나, 문제가 지속될 경우 담당자에게 문의해주세요." + "```")
     else:
@@ -117,7 +119,7 @@ async def get_ranking(score_type: int, title: str):
         discord_user = bot.get_guild(server_id).get_member_named(i[0])
         if discord_user:
             # 동순위 고려한 순위가 index 5에 있음
-            output += f"{i[5]}. {discord_user.display_name} : {i[score_type]}점\n"
+            output += f"{i[-1]}. {discord_user.display_name} : {i[score_type]}점\n"
 
     return "```" + output + "```"
 
