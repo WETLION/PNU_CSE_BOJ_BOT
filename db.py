@@ -40,7 +40,7 @@ def user_init(ctx, msg):
     cur.execute('SELECT * FROM boj_id WHERE discord_id = ?', (str(ctx.author),))
     arr = cur.fetchone()
     print(arr)
-    cur.execute('SELECT * FROM boj_id WHERE id = ?', msg)
+    cur.execute('SELECT * FROM boj_id WHERE id = ?', (msg,))
     boj_arr = cur.fetchone()
     print(boj_arr)
     if arr == None and boj_arr == None:
